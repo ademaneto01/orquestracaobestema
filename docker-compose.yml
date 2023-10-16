@@ -1,0 +1,48 @@
+version: "3"
+services:
+  backend:
+    container_name: back
+    build:
+      context: ./BackPainelDadosBe
+      dockerfile: Dockerfile
+    # image: ademarneto01/backbestema:1.0.0
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./BackPainelDadosBe/src:/app/src
+      - ./BackPainelDadosBe/package.json:/app/package.json
+
+  frontend:
+    container_name: front
+    build:
+      context: ./painel_dados_be/BeyondPainel
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - ./painel_dados_be/BeyondPainel/src:/app/src
+      - ./painel_dados_be/BeyondPainel/package.json:/app/package.json
+
+  db:
+    container_name: db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - mydb:/var/lib/postgresql/data
+  bestema:
+    build: .
+    container_name: bestema
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./painel_dados_be/BeyondPainel/app/src:/usr/share/nginx/html
+
+volumes:
+  mydb:
