@@ -1,3 +1,3 @@
-FROM nginx:latest
+FROM postgres:latest
 
-COPY ./painel_dados_be/BeyondPainel/app/src:/usr/share/nginx/html
+COPY ./init.sql /docker-entrypoint-initdb.d/
